@@ -45,7 +45,6 @@ def custom_token_required(f):
             token = base64.b64decode(request.headers['Authorization'])
         if not token:
             return jsonify({'message': "Token is required!", 'status': 401, 'data': ""})
-        app.logger.info(app.config['SECRET_KEY'], token.decode("utf-8"))
         if app.config['SECRET_KEY'] != token.decode("utf-8"):
             return jsonify({'message': "Token is invalid.", 'status': 401, 'data': ""})
 

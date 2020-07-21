@@ -68,6 +68,7 @@ class UserService:
         user_dict['app_data']['password'] = hashed_password
         user = User(
             user_dict.get('app_data'),
+            user_dict.get('cards'),
             user_dict.get('other')
         )
 

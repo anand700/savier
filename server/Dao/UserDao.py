@@ -23,7 +23,7 @@ class UserDao:
         try:
             database = PyMongo(app)
             user_dict['_id'] = ObjectId()
-            result = database.db.user.insert(user_dict)
+            result = database.db.users.insert(user_dict)
 
         except:
             app.logger.error(" UserDao : "
@@ -41,7 +41,7 @@ class UserDao:
 
         try:
             database = PyMongo(app)
-            result = database.db.user.find_one(
+            result = database.db.users.find_one(
                 {
                     'app_data.username': auth['username'],
                     'app_data.is_active': 'Y'
@@ -60,7 +60,7 @@ class UserDao:
 
         try:
             database = PyMongo(app)
-            result = database.db.user.update({'app_data.public_id': user_public_id},
+            result = database.db.users.update({'app_data.public_id': user_public_id},
                                              {
                                                  "$set": {
                                                      'app_data.api_key_token': token,
@@ -82,7 +82,7 @@ class UserDao:
 
         try:
             database = PyMongo(app)
-            result = database.db.user.find_one({'app_data.username': username}, {"_id": 0})
+            result = database.db.users.find_one({'app_data.username': username}, {"_id": 0})
 
         except:
             app.logger.error(" UserDao : "
@@ -97,7 +97,7 @@ class UserDao:
 
         try:
             database = PyMongo(app)
-            result = database.db.user.find_one({'app_data.email_address': email_address}, {"_id": 0})
+            result = database.db.users.find_one({'app_data.email_address': email_address}, {"_id": 0})
 
         except:
             app.logger.error(" UserDao : "
@@ -112,7 +112,7 @@ class UserDao:
 
         try:
             database = PyMongo(app)
-            result = database.db.user.update({'app_data.public_id': current_user['app_data']['public_id']},
+            result = database.db.users.update({'app_data.public_id': current_user['app_data']['public_id']},
                                              {"$set": {'app_data.api_key_token': ''}})
 
         except:
@@ -131,7 +131,7 @@ class UserDao:
 
         try:
             database = PyMongo(app)
-            result = database.db.user.find_one(
+            result = database.db.users.find_one(
                 {
                     'app_data.public_id': public_id,
                     'app_data.is_active': 'Y'

@@ -9,9 +9,6 @@ class UserDao:
     # Responsibilities:
     # 1. Calls the database using database connector.
 
-    date_format = '%Y-%m-%d %H:%M:%S'
-    DB_TIMEZONE = "UTC"
-
     def __init__(self):
         pass
 
@@ -61,13 +58,15 @@ class UserDao:
         try:
             database = PyMongo(app)
             result = database.db.users.update({'app_data.public_id': user_public_id},
-                                             {
-                                                 "$set": {
-                                                     'app_data.api_key_token': token,
-                                                     'app_data.last_modified': datetime.datetime.now(
-                                                         pytz.timezone(cls.DB_TIMEZONE))
-                                                 }
-                                             })
+                                              {
+                                                  "$set": {
+                                                      'app_data.api_key_token': token,
+                                                      'app_data.last_modified':
+                                                          datetime.datetime.now(
+                                                              pytz.timezone(
+                                                                  app.config.get('APP_VARIABLES').get('db_timezone')))
+                                                  }
+                                              })
 
         except:
             app.logger.error(" UserDao : "
@@ -113,7 +112,7 @@ class UserDao:
         try:
             database = PyMongo(app)
             result = database.db.users.update({'app_data.public_id': current_user['app_data']['public_id']},
-                                             {"$set": {'app_data.api_key_token': ''}})
+                                              {"$set": {'app_data.api_key_token': ''}})
 
         except:
             app.logger.error(" UserDao : "

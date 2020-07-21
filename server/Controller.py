@@ -7,6 +7,7 @@ from flask import Flask, request, jsonify
 import jwt
 from functools import wraps
 import server.Service.UserService
+import server.Service.CardService
 from flask_cors import CORS, cross_origin
 import base64
 from flask_mail import Mail, Message
@@ -159,6 +160,21 @@ def user_logout(current_user):
     #  UI - USER
     user_service = server.Service.UserService.UserService
     return user_service().user_logout(app, current_user)
+
+
+@app.route('/v1/dashboard', methods=['GET'])
+@token_required
+@cross_origin(origin='*')
+def dashboard(current_user):
+    """
+
+    :param current_user:
+    :return category-users-card-mapping:
+    """
+    #  Data which contains category and card best for you.
+    #  UI - USER
+    card_service = server.Service.CardService.CardService
+    return card_service().get_category_users_card_mapping(app, current_user)
 
 
 if __name__ == '__main__':

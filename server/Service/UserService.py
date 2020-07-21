@@ -56,7 +56,7 @@ class UserService:
         if not user_dict.get('app_data').get('last_name').strip():
             return JsonResponder().return_json_data(400, "LAST_NAME_REQUIRED", "")
 
-        app_variables = app.config['APP_VARIABLES']
+        app_variables = app.config.get('APP_VARIABLES')
         user_dict['app_data']['user_type_id'] = app_variables.get('user_type_id')
         user_dict['app_data']['is_active'] = "Y"
         user_dict['app_data']['create_date'] = datetime.datetime.now(pytz.timezone(app_variables.get('db_timezone')))
@@ -94,7 +94,7 @@ class UserService:
             return JsonResponder().return_json_data(400, "PASSWORD_REQUIRED", "")
 
         user = user_dao().get_user_fields_for_username(app, auth)
-        app_variables = app.config['APP_VARIABLES']
+        app_variables = app.config.get('APP_VARIABLES')
 
         # Validations after
         if not user:
@@ -136,7 +136,7 @@ class UserService:
         :return:
         """
         user_dao = UserDao
-        app_variables = app.config['APP_VARIABLES']
+        app_variables = app.config.get('APP_VARIABLES')
 
         if current_user['app_data']['user_type_id'] != app_variables.get('user_type_id'):
             return JsonResponder().return_json_data(401, "NOT_USER_LOGIN", "")

@@ -31,7 +31,6 @@ class CardService:
         :param public_id:
         :return:
         """
-        user_dao = UserDao
         card_dao = CardDao
         response_without = {
             "_id": 0
@@ -43,4 +42,24 @@ class CardService:
 
         card_details = card_dao().get_card_details(app, query, response_without)
 
-        return JsonResponder().return_json_data(200, "SUCCESS", card_details)
+        result = {}
+        for i in range(len(card_details)):
+            if not card_details[i].get('offer') or not card_details[i].get('offer').get('category'):
+                continue
+            for category_type, offers in card_details[i].get('offer').get('category').items():
+                for offer in offers:
+                    if not offer.get('cash_back_percentage'):
+                        continue
+                    details = {
+                        "name": card_details[i].get('name'),
+                        "company_name": card_details[i].get('company_name'),
+                        "offer": offer
+                    }
+                    if not result.get(category_type):
+                        result[category_type] = details
+                    else:
+                        if result.get(category_type).get('offer').get('cash_back_percentage') < \
+                                offer.get('cash_back_percentage'):
+                            result[category_type] = details
+
+        return JsonResponder().return_json_data(200, "SUCCESS", result)

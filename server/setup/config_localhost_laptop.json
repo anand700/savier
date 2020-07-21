@@ -1,0 +1,16 @@
+{
+  "SERVER_URL": "",
+  "SECRET_KEY": "cdrefe9210jdmn9sdfh9ksjdf9sdhf",
+  "MAIL_SERVER": "smtp.gmail.com",
+  "MAIL_PORT": 465,
+  "MAIL_USERNAME": "no-reply@site.energy",
+  "MAIL_PASSWORD": "Accelerate1",
+  "MAIL_USE_TLS": false,
+  "MAIL_USE_SSL": true,
+  "MONGO_URI": "mongodb://localhost:27017/savier",
+  "APP_VARIABLES": {
+    "user_type_id": 999999,
+    "admin_type_id": 999998,
+    "db_timezone": "UTC"
+  }
+}

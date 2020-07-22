@@ -1,6 +1,6 @@
 APScheduler==3.5.1
 BareNecessities==0.2.8
-Flask==0.12.2
+Flask==1.0
 Flask-Cors==3.0.3
 Flask-Mail==0.9.1
 Jinja2==2.10

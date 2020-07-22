@@ -41,6 +41,7 @@ class CardService:
         }
 
         card_details = card_dao().get_card_details(app, query, response_without)
+        app_variables = app.config.get('APP_VARIABLES')
 
         result = {}
         for i in range(len(card_details)):
@@ -49,6 +50,12 @@ class CardService:
             for category_type, offers in card_details[i].get('offer').get('category').items():
                 for offer in offers:
                     if not offer.get('cash_back_percentage'):
+                        continue
+
+                    # check if the offer is expired
+                    date_time = datetime.datetime.now(pytz.timezone(app_variables.get('default_timezone')))
+                    if offer.get('expiry_date') and \
+                            offer.get('expiry_date').strftime('%Y-%m-%d') < date_time.strftime('%Y-%m-%d'):
                         continue
                     details = {
                         "name": card_details[i].get('name'),

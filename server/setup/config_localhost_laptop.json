@@ -12,6 +12,7 @@
     "user_type_id": 999999,
     "admin_type_id": 999998,
     "db_timezone": "UTC",
-    "date_format": "%Y-%m-%d %H:%M:%S"
+    "date_format": "%Y-%m-%d %H:%M:%S",
+    "default_timezone": "America/Chicago"
   }
 }

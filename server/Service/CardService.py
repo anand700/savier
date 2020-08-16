@@ -44,29 +44,30 @@ class CardService:
         app_variables = app.config.get('APP_VARIABLES')
 
         result = {}
-        for i in range(len(card_details)):
-            if not card_details[i].get('offer') or not card_details[i].get('offer').get('category'):
+        for card_detail in card_details:
+            if len(card_detail.get('offers')) < 1:
                 continue
-            for category_type, offers in card_details[i].get('offer').get('category').items():
-                for offer in offers:
-                    if not offer.get('cash_back_percentage'):
-                        continue
+            for offer in card_detail.get('offers'):
+                if not offer.get('cash_back_percentage'):
+                    continue
 
-                    # check if the offer is expired
-                    date_time = datetime.datetime.now(pytz.timezone(app_variables.get('default_timezone')))
-                    if offer.get('expiry_date') and \
-                            offer.get('expiry_date').strftime('%Y-%m-%d') < date_time.strftime('%Y-%m-%d'):
-                        continue
-                    details = {
-                        "name": card_details[i].get('name'),
-                        "company_name": card_details[i].get('company_name'),
-                        "offer": offer
-                    }
-                    if not result.get(category_type):
-                        result[category_type] = details
-                    else:
-                        if result.get(category_type).get('offer').get('cash_back_percentage') < \
-                                offer.get('cash_back_percentage'):
-                            result[category_type] = details
+                # check if the offer is expired
+                date_time = datetime.datetime.now(pytz.timezone(app_variables.get('default_timezone')))
+                if offer.get('expiry_date') and \
+                        offer.get('expiry_date') < date_time.isoformat():
+                    continue
+                details = {
+                    "name": card_detail.get('name'),
+                    "company_name": card_detail.get('company_name'),
+                    "offer": offer
+                }
+
+                category = offer.get('category')
+                if not result.get(category):
+                    result[category] = details
+                else:
+                    if result.get(category).get('offer').get('cash_back_percentage') < \
+                            offer.get('cash_back_percentage'):
+                        result[category] = details
 
         return JsonResponder().return_json_data(200, "SUCCESS", result)

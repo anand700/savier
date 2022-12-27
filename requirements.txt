@@ -20,7 +20,7 @@ pip==9.0.1
 pyasn1==0.4.2
 pycparser==2.18
 pytz==2018.4
-setuptools==40.2.0
+setuptools==65.5.1
 six==1.11.0
 tzlocal==2.0.0b1
 validate-email==1.3
